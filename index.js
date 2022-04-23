@@ -20,7 +20,14 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const userCollection = client.db("emaJohn").collection("product");
+    const productCollection = client.db("emaJohn").collection("product");
+
+    app.get("/product", async (req, res) => {
+      const query = {};
+      const cursor = productCollection.find(query);
+      const products = await cursor.toArray();
+      res.send(products);
+    });
   } finally {
     // await client.close();
   }
